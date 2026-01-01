@@ -12,6 +12,8 @@ import java.util.List;
 public class BridgeGame {
     private static final String UPPER_BLOCK = "U";
     private static final String LOWER_BLOCK = "D";
+    private static final String RETRY_GAME = "R";
+    private static final String END_GAME = "Q";
 
     private final List<String> bridge;
     private List<String> gameResult;
@@ -70,10 +72,6 @@ public class BridgeGame {
         return hasPassedBridge() || hasFailed();
     }
 
-    public boolean hasPassedBridge() {
-        return gameResult.size() == bridge.size();
-    }
-
     public boolean hasFailed() {
         return gameResult.get(gameResult.size() - 1).equals("X");
     }
@@ -83,7 +81,12 @@ public class BridgeGame {
      * <p>
      * 재시작을 위해 필요한 메서드의 반환 타입(return type), 인자(parameter)는 자유롭게 추가하거나 변경할 수 있다.
      */
-    public void retry() {
+    public void retry(String gameCommand) {
+        validateGameCommand(gameCommand);
+    }
+
+    private boolean hasPassedBridge() {
+        return gameResult.size() == bridge.size();
     }
 
     private void validateMovingBlock(String movingBlock) {
@@ -91,5 +94,12 @@ public class BridgeGame {
             return;
         }
         throw new IllegalArgumentException(ErrorMessage.INVALID_MOVING_BLOCK.getMessage());
+    }
+
+    private void validateGameCommand(String gameCommand) {
+        if (gameCommand.equals(RETRY_GAME) || gameCommand.equals(END_GAME)) {
+            return;
+        }
+        throw new IllegalArgumentException(ErrorMessage.INVALID_GAME_COMMAND.getMessage());
     }
 }

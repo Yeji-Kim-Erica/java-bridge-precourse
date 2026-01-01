@@ -79,6 +79,12 @@ public class BridgeController {
     }
 
     private void retryGame(BridgeGame bridgeGame) {
+        outputView.printRetryPrompt();
+        retry(this::resetGameResult, bridgeGame);
+    }
 
+    private void resetGameResult(BridgeGame bridgeGame) {
+        String gameCommand = inputView.readGameCommand();
+        bridgeGame.retry(gameCommand);
     }
 }
