@@ -26,6 +26,10 @@ public class BridgeMaker {
     public List<String> makeBridge(int size) {
         validateBridgeSize(size);
         List<String> bridge = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            String passCondition = decidePassableBridge();
+            bridge.add(passCondition);
+        }
         return bridge;
     }
 
@@ -33,5 +37,16 @@ public class BridgeMaker {
         if (size < MINIMUM_BRIDGE_SIZE || size > MAXIMUM_BRIDGE_SIZE) {
             throw new IllegalArgumentException(ErrorMessage.BRIDGE_SIZE_OUT_OF_RANGE.getMessage());
         }
+    }
+
+    private String decidePassableBridge() {
+        int passCondition = bridgeNumberGenerator.generate();
+        if (passCondition == 0) {
+            return "D";
+        }
+        if (passCondition == 1) {
+            return "U";
+        }
+        return null;
     }
 }

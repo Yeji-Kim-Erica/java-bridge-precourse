@@ -1,11 +1,15 @@
 package bridge.model;
 
 import bridge.error.ErrorMessage;
+import bridge.util.BridgeNumberGenerator;
 import bridge.util.BridgeRandomNumberGenerator;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -18,10 +22,23 @@ public class BridgeMakerTest {
         @Test
         void 올바른_다리_길이로_다리생성() {
             // given
+            BridgeNumberGenerator bridgeNumberGenerator = new BridgeNumberGenerator() {
+                private final List<Integer> numbers = List.of(1, 0, 0, 1, 1);
+
+                private int order;
+
+                @Override
+                public int generate() {
+                    return numbers.get(order++);
+                }
+            };
+            BridgeMaker bridgeMaker = new BridgeMaker(bridgeNumberGenerator);
             int size = 5;
 
             // when & then
-            assertThat(defaultBridgeMaker.makeBridge(size)).isNotNull();
+            assertThat(bridgeMaker.makeBridge(size)).containsExactly(
+                    "U", "D", "D", "U", "U"
+            );
         }
     }
 
