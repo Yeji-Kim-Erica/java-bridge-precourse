@@ -1,10 +1,12 @@
 package bridge.controller;
 
+import bridge.model.BridgeGame;
 import bridge.model.BridgeMaker;
 import bridge.view.InputView;
 import bridge.view.OutputView;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
@@ -24,8 +26,15 @@ public class BridgeController {
     public void run() {
         outputView.printStart();
 
+        BridgeGame bridgeGame = createGame();
+        outputView.printMovingBlockPrompt();
+        retry(this::proceedGame, bridgeGame);
+    }
+
+    private BridgeGame createGame() {
         outputView.printBridgeSizePrompt();
         List<String> bridge = retry(this::createBridge);
+        return new BridgeGame(bridge);
     }
 
     private <T> T retry(Supplier<T> supplier) {
@@ -41,5 +50,21 @@ public class BridgeController {
     private List<String> createBridge() {
         int bridgeSize = inputView.readBridgeSize();
         return bridgeMaker.makeBridge(bridgeSize);
+    }
+
+    private void retry(Consumer<BridgeGame> consumer, BridgeGame bridgeGame) {
+        while (true) {
+            try {
+                consumer.accept(bridgeGame);
+                return;
+            } catch (IllegalArgumentException e) {
+                outputView.printErrorMessage(e);
+            }
+        }
+    }
+
+    private void proceedGame(BridgeGame bridgeGame) {
+        String movingBlock = inputView.readMoving();
+        bridgeGame.move(movingBlock);
     }
 }
