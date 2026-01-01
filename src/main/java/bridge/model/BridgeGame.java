@@ -25,8 +25,11 @@ public class BridgeGame {
         this.gameResult = new ArrayList<>();
     }
 
-    public List<String> getGameResult() {
-        return Collections.unmodifiableList(gameResult);
+    public String getGameResult() {
+        if (hasFailed()) {
+            return "실패";
+        }
+        return "성공";
     }
 
     public List<String> getUpperBridgeResult() {

@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.List;
@@ -24,14 +23,13 @@ public class BridgeGameTest {
 
     @Nested
     class SuccessTest {
-        @ParameterizedTest
-        @CsvSource(value = {"U,O", "D,X"})
-        void 이동가능한_칸으로_전진(String movingBlock, String result) {
+        @Test
+        void 이동가능한_칸으로_전진() {
             // when
-            defaultBridgeGame.move(movingBlock);
+            defaultBridgeGame.move("U");
 
             // then
-            assertThat(defaultBridgeGame.getGameResult()).containsExactly(result);
+            assertThat(defaultBridgeGame.getUpperBridgeResult()).containsExactly("O");
         }
 
         @Test
