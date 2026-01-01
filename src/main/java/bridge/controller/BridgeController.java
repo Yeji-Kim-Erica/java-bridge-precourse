@@ -28,9 +28,12 @@ public class BridgeController {
         outputView.printStart();
 
         BridgeGame bridgeGame = createGame();
+
         do {
             proceedGame(bridgeGame);
         } while (bridgeGame.hasFailed() && retryGame(bridgeGame));
+
+        outputView.printResult(bridgeGame);
     }
 
     private BridgeGame createGame() {
