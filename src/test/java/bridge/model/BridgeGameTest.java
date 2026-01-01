@@ -44,6 +44,20 @@ public class BridgeGameTest {
             // then
             assertThat(defaultBridgeGame.isOver()).isTrue();
         }
+
+        @Test
+        void 다리_건너기_실패시_게임_종료() {
+            // given
+            List<String> movingBlocks = List.of("U","D");
+
+            // when
+            for (String block : movingBlocks) {
+                defaultBridgeGame.move(block);
+            }
+
+            // then
+            assertThat(defaultBridgeGame.isOver()).isTrue();
+        }
     }
 
     @Nested

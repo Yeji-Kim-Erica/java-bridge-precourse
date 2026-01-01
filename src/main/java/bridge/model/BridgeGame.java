@@ -43,9 +43,15 @@ public class BridgeGame {
     }
 
     public boolean isOver() {
-        boolean passedBridge = gameResult.size() == bridge.size();
-        boolean hasFailed = gameResult.get(gameResult.size() - 1).equals("X");
-        return passedBridge || hasFailed;
+        return hasPassedBridge() || hasFailed();
+    }
+
+    public boolean hasPassedBridge() {
+        return gameResult.size() == bridge.size();
+    }
+
+    public boolean hasFailed() {
+        return gameResult.get(gameResult.size() - 1).equals("X");
     }
 
     /**

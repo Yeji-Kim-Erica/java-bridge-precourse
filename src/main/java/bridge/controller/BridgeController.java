@@ -27,11 +27,10 @@ public class BridgeController {
         outputView.printStart();
 
         BridgeGame bridgeGame = createGame();
-
-        do {
-            outputView.printMovingBlockPrompt();
-            retry(this::proceedGame, bridgeGame);
-        } while (!bridgeGame.isOver());
+        proceedGame(bridgeGame);
+        if (bridgeGame.hasFailed()) {
+            retryGame(bridgeGame);
+        }
     }
 
     private BridgeGame createGame() {
@@ -55,6 +54,13 @@ public class BridgeController {
         return bridgeMaker.makeBridge(bridgeSize);
     }
 
+    private void proceedGame(BridgeGame bridgeGame) {
+        do {
+            outputView.printMovingBlockPrompt();
+            retry(this::tryMove, bridgeGame);
+        } while (!bridgeGame.isOver());
+    }
+
     private void retry(Consumer<BridgeGame> consumer, BridgeGame bridgeGame) {
         while (true) {
             try {
@@ -66,8 +72,12 @@ public class BridgeController {
         }
     }
 
-    private void proceedGame(BridgeGame bridgeGame) {
+    private void tryMove(BridgeGame bridgeGame) {
         String movingBlock = inputView.readMoving();
         bridgeGame.move(movingBlock);
+    }
+
+    private void retryGame(BridgeGame bridgeGame) {
+
     }
 }
