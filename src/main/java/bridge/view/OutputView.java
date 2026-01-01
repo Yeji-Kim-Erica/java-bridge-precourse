@@ -1,5 +1,9 @@
 package bridge.view;
 
+import bridge.model.BridgeGame;
+
+import java.util.List;
+
 import static java.lang.System.out;
 
 /**
@@ -7,6 +11,7 @@ import static java.lang.System.out;
  */
 public class OutputView {
     private static final String ERROR_PREFIX = "[ERROR] ";
+    private static final String GAME_RESULT = "[ %s ]\n";
 
     public void printErrorMessage(IllegalArgumentException e) {
         out.println(ERROR_PREFIX + e.getMessage());
@@ -31,7 +36,10 @@ public class OutputView {
      * <p>
      * 출력을 위해 필요한 메서드의 인자(parameter)는 자유롭게 추가하거나 변경할 수 있다.
      */
-    public void printMap() {
+    public void printMap(BridgeGame bridgeGame) {
+        out.printf(GAME_RESULT, String.join(" | ", bridgeGame.getUpperBridgeResult()));
+        out.printf(GAME_RESULT, String.join(" | ", bridgeGame.getLowerBridgeResult()));
+        out.println();
     }
 
     /**

@@ -58,6 +58,7 @@ public class BridgeController {
         do {
             outputView.printMovingBlockPrompt();
             retry(this::tryMove, bridgeGame);
+            outputView.printMap(bridgeGame);
         } while (!bridgeGame.isOver());
     }
 

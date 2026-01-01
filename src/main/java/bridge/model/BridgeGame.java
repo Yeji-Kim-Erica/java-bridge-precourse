@@ -25,6 +25,30 @@ public class BridgeGame {
         return Collections.unmodifiableList(gameResult);
     }
 
+    public List<String> getUpperBridgeResult() {
+        List<String> upperResult = new ArrayList<>(gameResult);
+        for (int i = 0; i < gameResult.size(); i++) {
+            boolean isLowerBridgeResult = bridge.get(i).equals(LOWER_BLOCK) && upperResult.get(i).equals("O");
+            boolean hasFailedOnUpperBridge = upperResult.get(i).equals("X") && bridge.get(i).equals(UPPER_BLOCK);
+            if (isLowerBridgeResult || hasFailedOnUpperBridge) {
+                upperResult.set(i, " ");
+            }
+        }
+        return Collections.unmodifiableList(upperResult);
+    }
+
+    public List<String> getLowerBridgeResult() {
+        List<String> lowerResult = new ArrayList<>(gameResult);
+        for (int i = 0; i < gameResult.size(); i++) {
+            boolean isUpperBridgeResult = bridge.get(i).equals(UPPER_BLOCK) && lowerResult.get(i).equals("O");
+            boolean hasFailedOnLowerBridge = lowerResult.get(i).equals("X") && bridge.get(i).equals(LOWER_BLOCK);
+            if (isUpperBridgeResult || hasFailedOnLowerBridge) {
+                lowerResult.set(i, " ");
+            }
+        }
+        return Collections.unmodifiableList(lowerResult);
+    }
+
     /**
      * 사용자가 칸을 이동할 때 사용하는 메서드
      * <p>
