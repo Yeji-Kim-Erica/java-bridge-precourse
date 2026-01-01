@@ -1,9 +1,11 @@
 package bridge.model;
 
 import bridge.error.ErrorMessage;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.List;
@@ -13,17 +15,34 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class BridgeGameTest {
     private final List<String> defaultBridge = List.of("U","U","U","D","D","U","D","U");
-    private final BridgeGame defaultBridgeGame = new BridgeGame(defaultBridge);
+    private BridgeGame defaultBridgeGame;
+
+    @BeforeEach
+    void setUp() {
+        defaultBridgeGame = new BridgeGame(defaultBridge);
+    }
 
     @Nested
     class SuccessTest {
         @ParameterizedTest
-        @ValueSource(strings = {"U","D"})
-        void 이동가능한_칸으로_전진(String movingBlock) {
+        @CsvSource(value = {"U,O", "D,X"})
+        void 이동가능한_칸으로_전진(String movingBlock, String result) {
             // when
             defaultBridgeGame.move(movingBlock);
 
             // then
+            assertThat(defaultBridgeGame.getGameResult()).containsExactly(result);
+        }
+
+        @Test
+        void 다리_끝까지_건너면_게임_종료() {
+            // when
+            for (String block : defaultBridge) {
+                defaultBridgeGame.move(block);
+            }
+
+            // then
+            assertThat(defaultBridgeGame.isOver()).isTrue();
         }
     }
 

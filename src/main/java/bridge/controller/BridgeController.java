@@ -27,8 +27,11 @@ public class BridgeController {
         outputView.printStart();
 
         BridgeGame bridgeGame = createGame();
-        outputView.printMovingBlockPrompt();
-        retry(this::proceedGame, bridgeGame);
+
+        do {
+            outputView.printMovingBlockPrompt();
+            retry(this::proceedGame, bridgeGame);
+        } while (!bridgeGame.isOver());
     }
 
     private BridgeGame createGame() {

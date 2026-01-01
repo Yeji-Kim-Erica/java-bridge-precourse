@@ -2,6 +2,8 @@ package bridge.model;
 
 import bridge.error.ErrorMessage;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -12,9 +14,15 @@ public class BridgeGame {
     private static final String LOWER_BLOCK = "D";
 
     private final List<String> bridge;
+    private List<String> gameResult;
 
     public BridgeGame(List<String> bridge) {
         this.bridge = bridge;
+        this.gameResult = new ArrayList<>();
+    }
+
+    public List<String> getGameResult() {
+        return Collections.unmodifiableList(gameResult);
     }
 
     /**
@@ -24,6 +32,20 @@ public class BridgeGame {
      */
     public void move(String movingBlock) {
         validateMovingBlock(movingBlock);
+        int index = gameResult.size();
+        boolean isPassable = bridge.get(index).equals(movingBlock);
+        if (isPassable) {
+            gameResult.add("O");
+        }
+        if (!isPassable) {
+            gameResult.add("X");
+        }
+    }
+
+    public boolean isOver() {
+        boolean passedBridge = gameResult.size() == bridge.size();
+        boolean hasFailed = gameResult.get(gameResult.size() - 1).equals("X");
+        return passedBridge || hasFailed;
     }
 
     /**
