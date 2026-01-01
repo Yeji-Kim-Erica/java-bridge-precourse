@@ -1,6 +1,9 @@
 package bridge;
 
 import bridge.controller.BridgeController;
+import bridge.model.BridgeMaker;
+import bridge.util.BridgeNumberGenerator;
+import bridge.util.BridgeRandomNumberGenerator;
 import bridge.view.InputView;
 import bridge.view.OutputView;
 
@@ -17,6 +20,9 @@ public class Application {
         InputView inputView = new InputView();
         OutputView outputView = new OutputView();
 
-        return new BridgeController(inputView, outputView);
+        BridgeNumberGenerator bridgeNumberGenerator = new BridgeRandomNumberGenerator();
+        BridgeMaker bridgeMaker = new BridgeMaker(bridgeNumberGenerator);
+
+        return new BridgeController(inputView, outputView, bridgeMaker);
     }
 }
