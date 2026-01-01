@@ -13,6 +13,10 @@ public class OutputView {
     private static final String ERROR_PREFIX = "[ERROR] ";
     private static final String GAME_RESULT = "[ %s ]\n";
 
+    public void printBlankLine() {
+        out.println();
+    }
+
     public void printErrorMessage(IllegalArgumentException e) {
         out.println(ERROR_PREFIX + e.getMessage());
     }

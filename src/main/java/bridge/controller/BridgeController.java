@@ -7,6 +7,7 @@ import bridge.view.OutputView;
 
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -27,10 +28,9 @@ public class BridgeController {
         outputView.printStart();
 
         BridgeGame bridgeGame = createGame();
-        proceedGame(bridgeGame);
-        if (bridgeGame.hasFailed()) {
-            retryGame(bridgeGame);
-        }
+        do {
+            proceedGame(bridgeGame);
+        } while (bridgeGame.hasFailed() && retryGame(bridgeGame));
     }
 
     private BridgeGame createGame() {
@@ -78,13 +78,23 @@ public class BridgeController {
         bridgeGame.move(movingBlock);
     }
 
-    private void retryGame(BridgeGame bridgeGame) {
+    private boolean retryGame(BridgeGame bridgeGame) {
         outputView.printRetryPrompt();
-        retry(this::resetGameResult, bridgeGame);
+        return retry(this::resetGameResult, bridgeGame);
     }
 
-    private void resetGameResult(BridgeGame bridgeGame) {
+    private boolean retry(Function<BridgeGame, Boolean> function, BridgeGame bridgeGame) {
+        while (true) {
+            try {
+                return function.apply(bridgeGame);
+            } catch (IllegalArgumentException e) {
+                outputView.printErrorMessage(e);
+            }
+        }
+    }
+
+    private boolean resetGameResult(BridgeGame bridgeGame) {
         String gameCommand = inputView.readGameCommand();
-        bridgeGame.retry(gameCommand);
+        return bridgeGame.retry(gameCommand);
     }
 }

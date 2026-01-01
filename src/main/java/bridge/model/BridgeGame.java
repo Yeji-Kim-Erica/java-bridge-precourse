@@ -16,7 +16,9 @@ public class BridgeGame {
     private static final String END_GAME = "Q";
 
     private final List<String> bridge;
+
     private List<String> gameResult;
+    private int tryCount = 1;
 
     public BridgeGame(List<String> bridge) {
         this.bridge = bridge;
@@ -51,6 +53,10 @@ public class BridgeGame {
         return Collections.unmodifiableList(lowerResult);
     }
 
+    public int getTryCount() {
+        return tryCount;
+    }
+
     /**
      * 사용자가 칸을 이동할 때 사용하는 메서드
      * <p>
@@ -73,7 +79,7 @@ public class BridgeGame {
     }
 
     public boolean hasFailed() {
-        return gameResult.get(gameResult.size() - 1).equals("X");
+        return gameResult.contains("X");
     }
 
     /**
@@ -81,8 +87,14 @@ public class BridgeGame {
      * <p>
      * 재시작을 위해 필요한 메서드의 반환 타입(return type), 인자(parameter)는 자유롭게 추가하거나 변경할 수 있다.
      */
-    public void retry(String gameCommand) {
+    public boolean retry(String gameCommand) {
         validateGameCommand(gameCommand);
+        boolean isRetrying = gameCommand.equals(RETRY_GAME);
+        if (isRetrying) {
+            gameResult = new ArrayList<>();
+            tryCount++;
+        }
+        return isRetrying;
     }
 
     private boolean hasPassedBridge() {

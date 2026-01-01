@@ -58,6 +58,13 @@ public class BridgeGameTest {
             // then
             assertThat(defaultBridgeGame.isOver()).isTrue();
         }
+
+        @Test
+        void 다리_건너기_재시도() {
+            // when & then
+            assertThat(defaultBridgeGame.retry("R")).isTrue();
+            assertThat(defaultBridgeGame.getTryCount()).isEqualTo(2);
+        }
     }
 
     @Nested
